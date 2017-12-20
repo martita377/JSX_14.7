@@ -32,13 +32,31 @@ var contactForm = {
 };
 
 //klasa App która będzie renderowana do diva o klasie app.
+
+
 var App = React.createClass({
+    getInitialState: function() {
+        return {
+            contacts: contacts
+        }
+    },
+    newContactAdded: function (details) {
+        this.setState(function (state) {
+            return {
+                contacts: Array.prototype.concat.call({
+                    id: contacts.length + 1,
+                    firstName: details.firstName,
+                    lastName: details.lastName,
+                    email: details.email
+                }, state.contacts)
+            }
+        })
+    },
     render: function() {
         return (
-
             <div className={'app'}>
-                <ContactForm contact={contactForm}/>
-                <Contacts items={contacts}/>
+                <ContactForm onFormSubmit={this.newContactAdded}/>
+                <Contacts items={this.state.contacts}/>
             </div>
         );
     }
